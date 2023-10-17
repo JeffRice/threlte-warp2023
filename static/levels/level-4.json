@@ -1,0 +1,364 @@
+{
+  "testGroupA": [
+    {
+      "x": -26,
+      "z": 20,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -26,
+      "z": 16,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -26,
+      "z": 12,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -30,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -30,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -30,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -34,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -34,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -34,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -38,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -38,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -38,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -42,
+      "z": 20,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -42,
+      "z": 16,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -42,
+      "z": 12,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -46,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -46,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -46,
+      "z": 8,
+      "cubeType": "normal"
+    },
+    {
+      "x": -50,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -50,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -50,
+      "z": 8,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "z": 8,
+      "cubeType": "normal"
+    }
+  ],
+  "testGroupB": [
+    {
+      "x": -2,
+      "z": 24,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -2,
+      "z": 20,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -10,
+      "z": 12,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -10,
+      "z": 8,
+      "cubeType": "blackCube"
+    },
+
+    {
+      "x": -14,
+      "z": 24,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -18,
+      "z": 24,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -18,
+      "z": 20,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -22,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -22,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -26,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -26,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -30,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -30,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -34,
+      "z": 12,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -34,
+      "z": 8,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -38,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -42,
+      "z": 24,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -42,
+      "z": 20,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -42,
+      "z": 16,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -42,
+      "z": 12,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -54,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -58,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -58,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -58,
+      "z": 8,
+      "cubeType": "normal"
+    },
+    {
+      "x": -62,
+      "z": 12,
+      "cubeType": "normal"
+    }
+],
+  "testGroupC": [
+    {
+        "x": -26,
+        "z": 20,
+        "cubeType": "blackCube"
+      },
+      {
+        "x": -26,
+        "z": 16,
+        "cubeType": "bomb"
+      },
+      {
+        "x": -26,
+        "z": 12,
+        "cubeType": "blackCube"
+      },
+      {
+        "x": -30,
+        "z": 20,
+        "cubeType": "normal"
+      },
+      {
+        "x": -30,
+        "z": 16,
+        "cubeType": "normal"
+      },
+      {
+        "x": -30,
+        "z": 12,
+        "cubeType": "normal"
+      },
+      {
+        "x": -34,
+        "z": 20,
+        "cubeType": "blackCube"
+      },
+      {
+        "x": -34,
+        "z": 16,
+        "cubeType": "normal"
+      },
+      {
+        "x": -34,
+        "z": 12,
+        "cubeType": "normal"
+      },
+      {
+        "x": -38,
+        "z": 20,
+        "cubeType": "blackCube"
+      },
+      {
+        "x": -38,
+        "z": 16,
+        "cubeType": "normal"
+      },
+      {
+        "x": -38,
+        "z": 12,
+        "cubeType": "normal"
+      },
+      {
+        "x": -42,
+        "z": 20,
+        "cubeType": "blackCube"
+      },
+      {
+        "x": -42,
+        "z": 16,
+        "cubeType": "bomb"
+      },
+      {
+        "x": -42,
+        "z": 12,
+        "cubeType": "blackCube"
+      },
+      {
+        "x": -46,
+        "z": 20,
+        "cubeType": "normal"
+      },
+      {
+        "x": -46,
+        "z": 16,
+        "cubeType": "normal"
+      },
+      {
+        "x": -50,
+        "z": 16,
+        "cubeType": "normal"
+      },
+      {
+        "x": -54,
+        "z": 24,
+        "cubeType": "normal"
+      },
+      {
+        "x": -54,
+        "z": 20,
+        "cubeType": "normal"
+      },
+      {
+        "x": -54,
+        "z": 16,
+        "cubeType": "normal"
+      }
+
+  ],
+  "stepCountStar": 23
+
+
+  }
+  

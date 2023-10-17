@@ -1,0 +1,240 @@
+{
+  "testGroupA": [
+    {
+      "x": -14,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -14,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -14,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -18,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -18,
+      "y": 2,
+      "z": 20,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -18,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -22,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -22,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -22,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "y": 2,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -58,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -58,
+      "y": 2,
+      "z": 12,
+      "cubeType": "normal"
+    },
+    {
+      "x": -62,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -62,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -66,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -66,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    }
+
+  ],
+  "testGroupB": [
+    {
+      "x": -14,
+      "y": 2,
+      "z": 20,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -14,
+      "y": 2,
+      "z": 16,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -38,
+      "y": 2,
+      "z": 16,
+      "cubeType": "dash"
+    },
+    {
+      "x": -46,
+      "y": 2,
+      "z": 16,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -46,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -46,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -50,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -50,
+      "y": 2,
+      "z": 20,
+      "cubeType": "blackCube"
+    },
+    {
+      "x": -50,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -54,
+      "y": 2,
+      "z": 24,
+      "cubeType": "bomb"
+    }
+
+  ],
+  "testGroupC": [
+    {
+      "x": -18,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -18,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -18,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -22,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -22,
+      "y": 2,
+      "z": 20,
+      "cubeType": "bomb"
+    },
+    {
+      "x": -22,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    },
+    {
+      "x": -26,
+      "y": 2,
+      "z": 16,
+      "cubeType": "normal"
+    },
+    {
+      "x": -26,
+      "y": 2,
+      "z": 20,
+      "cubeType": "normal"
+    },
+    {
+      "x": -26,
+      "y": 2,
+      "z": 24,
+      "cubeType": "normal"
+    }
+  ],
+  "stepCountStar": 6
+  }
+  
