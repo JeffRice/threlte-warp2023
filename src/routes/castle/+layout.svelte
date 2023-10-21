@@ -72,7 +72,7 @@ fpsDiv=!fpsDiv
 	let ground = document.querySelectorAll("#retrobg-ground");
 
 	sky[0].style.opacity=1
-	ground[0].style.opacity=1
+// 	ground[0].style.opacity=1
 
 
 

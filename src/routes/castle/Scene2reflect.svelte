@@ -13,8 +13,48 @@ import { transitions } from '@threlte/extras'
 import { Audio, AudioListener } from '@threlte/extras'
 import type { Material, Mesh } from 'three'
 
-const BM_texture3 = useLoader(TextureLoader).load('./black_marbleDark.png')
-const BM_texture2 = useLoader(TextureLoader).load('./black_marble2.png')
+import { useTexture } from '@threlte/extras'
+import { RepeatWrapping } from 'three'
+
+
+  const map = useTexture('purpleStone.jpg',  {
+    transform: (texture) => {
+      texture.wrapS = RepeatWrapping
+      texture.wrapT = RepeatWrapping
+      texture.repeat.set(4, 4)
+      return texture
+    }
+  })
+
+
+  
+
+  const darkWallMap = useTexture('darkStoneWall.webp', {
+    transform: (texture) => {
+      texture.wrapS = RepeatWrapping
+      texture.wrapT = RepeatWrapping
+      texture.repeat.set(4, 4)
+      return texture
+    }
+  })
+
+
+  const { load } = useLoader(TextureLoader)
+  const textures = load({
+    texture1: 'purpleStone.jpg',
+    texture2: 'download.jpg'
+  })
+
+
+
+
+
+
+  const Stone_texture = useLoader(TextureLoader).load('./castleWall.png')
+
+  const darkWall = useLoader(TextureLoader).load('./darkWall1.jpg')
+
+
 
 
 /* $: $gameMode, checkGameMode(); */
@@ -29,90 +69,18 @@ child.setAttribute('style', 'position: relative; display: none;');
 }
 
 let light
-let showCube = true
 let showCubes = {}
-let currentLevel = 0
-let gridShiftCooldown = true
-let tickerRunning = false
 let activeSpots = new Set()
 let droppingRow = false
 let droppingQueue = []
 let rotation = 0
 let currentLocation = [10, 2, 16]
 let droppedRows = 0
-let ticker
-let importedControls
-let controlsComponent
-let enablePause = false
-let cubesInLevel = 0
-let timeoutHandle
-
-
-let deletedSpots = new Set()
-
-let startingGridA
-let startingGridB
-let startingGridC
-
-
-
-// backup original grid positions and quaternions
-let startingGridAPosition
-let startingGridBPosition
-let startingGridCPosition
-
-let startingGridAQuaternion
-let startingGridBQuaternion
-let startingGridCQuaternion
-
-let startingGridARotation
-let startingGridBRotation
-let startingGridCRotation
-
-let startingGroupAPos 
-let startingGroupBPos 
-let startingGroupCPos 
-let startingGroupAQ 
-let startingGroupBQ 
-let startingGroupCQ 
-    
 
 $: showCubes = showCubes
 
 $: activeSpots = activeSpots
 
-
-
-
-$:  checkTrue = () => {
-let rotatingCursors = scene.children.filter(x => x.name==='rotatingCursor')
-
-  if(rotatingCursors){
-    for(const item of rotatingCursors){
-      item.rotation.y = rotation*2
-    }
-  }
-
-  
-
-  if(droppedRows + droppingQueue.length>59){
-    //  console.log('end game early.')
-      gameMode.update(n => 'over');
-      gameMenu.update(n => true);
-      recap.update(n => true);
-      droppingQueue = []
-      droppedRows = 0
-  }
-
-  if(droppedRows===60){
-    //  console.log('end game.')
-      gameMode.update(n => 'over');
-      gameMenu.update(n => true);
-      recap.update(n => true);
-      droppingQueue = []
-  }
-
-}
 
 
 transitions()
@@ -123,35 +91,14 @@ const {  scene } = useThrelte()
 
 useFrame((state, delta) => {
   rotation += delta
-  checkTrue()
   TWEEN.update()
    stats.update()
-   light.position.set( currentLocation[0], currentLocation[1], currentLocation[2]  );
 
    let pCam = scene.children.filter(x => x.name==='pCamera')        
    if(pCam[0].children.length){ 
-     //  // //console.log('songAudio', pCam[0].children[0])
-     // pCam[0].children[0].gain.gain.value=$storeMusicVolume
    }
   
 
-    if(droppingQueue.length){
-
-      //only a test
-      if(!droppingRow){
-        //console.log('space dropping row', droppingRow, droppingQueue)
-            // set flag for length of tween
-            droppingRow = true
-          setTimeout(() => {
-          
-            droppingRow = false
-          }, 1500); //enough time to run the transition effect
-
-          dropLastRow()
-      }
-
-
-    }
 
 })
 
@@ -199,10 +146,10 @@ fragmentShader: `
 });
 
 
-const uniforms = { type: 't', value: BM_texture3};
+
 
 const materialPlus = new THREE.ShaderMaterial({  
-      uniforms: { type: 't', value: BM_texture3},
+      uniforms: { type: 't', value: Stone_texture},
       vertexShader: testmaterial.vertexShader,
       fragmentShader: testmaterial.fragmentShader
 });
@@ -211,22 +158,51 @@ const vertexShader = testmaterial.vertexShader
 const fragmentShader = testmaterial.fragmentShader
 
 
+const darkTestMaterial = new THREE.ShaderMaterial({
+uniforms: {
+  color1: {
+    value: new THREE.Color("rgb(42, 23, 81)")
+  },
+  color2: {
+      value: new THREE.Color("rgb(60, 35, 119)")
+  }
+},
+vertexShader: `
+  varying vec2 vUv;
+
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+  }
+`,
+fragmentShader: `
+  uniform vec3 color1;
+  uniform vec3 color2;
+
+  varying vec2 vUv;
+  
+  void main() {
+    
+    gl_FragColor = vec4(mix(color1, color2, vUv.y), 1.0);
+  }
+`,
+// wireframe: true
+  transparent: true,
+
+});
 
 
 
-/* 
-let baseCubes=[]
-    for(let i=-35; i< 25; i++){
-      baseCubes[i] = new THREE.Mesh( geometry, testmaterial ); 
-      baseCubes[i].name='baseRow' 
-      baseCubes[i].position.y = -22.5;
-      baseCubes[i].position.z = 16;
-      baseCubes[i].position.x = 62 + (4*i);
-      baseCubes[i].layers.enable( 0 )
-      baseCubes[i].layers.enable( 1 )
-      scene.add( baseCubes[i] );
-    }
- */
+
+const darkMaterialPlus = new THREE.ShaderMaterial({  
+      uniforms: { type: 't', value: Stone_texture},
+      vertexShader: darkTestMaterial.vertexShader,
+      fragmentShader: darkTestMaterial.fragmentShader
+});
+
+const darkVertexShader = darkTestMaterial.vertexShader
+const darkFragmentShader = darkTestMaterial.fragmentShader
+
 
 
 
@@ -312,84 +288,9 @@ if(pCam[0].position.x!=currentX){
   }
 
 
-  function playCaptureSound(){
-    let pCam = scene.children.filter(x => x.name==='pCamera')
-    const listener = pCam[0].children[0]
-
-    const capture = new THREE.Audio( listener );
-    capture.name="charge"
-    // //console.log('strangerSong', strangerSong)
-        
-    // load a sound and set it as the Audio object's buffer
-    const audioLoader = new THREE.AudioLoader();
-        
-    audioLoader.load( 'swoosh-5.mp3', function( buffer ) {
-      capture.setBuffer( buffer );
-      capture.setLoop( false );
-      capture.setVolume( 0.35 );
-      capture.setPlaybackRate( 1 );
-      capture.play();
-    });
-  }
-
-
-
-
-
-
-
-/* var plane=[];
-var qty=12;
-var hz_qty=20;
-var vt_qty=5;
-var half_hz=(qty*hz_qty)/2;
-const gridB = new THREE.Group();
-gridB.name='gridB';
-for(let p=1;p<=qty;p++){
-plane[p]=new THREE.GridHelper(hz_qty,vt_qty,'#666','#666');
-plane[p].name='grid' + p
-plane[p].position.set(-half_hz+(hz_qty*p)-hz_qty/2,0.01,16);
-gridB.add(plane[p]);
-// scene.add(plane[p]);
-}
-
-scene.add(gridB);
-gridB.position.x=40
-gridB.position.y=0.1
- */
-function doWave(){
-  let baseRows = scene.children.filter(x => x.name==='baseRow')
-  let i = 1
-  for(const item of baseRows){
-    
-    setTimeout(function timer() {
-        // move up each one just a few MS later than the last
-        // //console.log('item', item)
-      let newSpot = item.position.y + 9.75
-                
-                new TWEEN.Tween(item.position)
-                .to({y: newSpot}, 1000)
-                .easing(TWEEN.Easing.Quadratic.Out)
-                .start();
-}, i * 75);
-      i++
-  }
-
-
-  if(sceneMirror[0].position.x===-160){
-    new TWEEN.Tween(sceneMirror[0].position)
-                .to({x: sceneMirror[0].position.x + 200}, 12000)
-                .easing(TWEEN.Easing.Quadratic.Out)
-                .start(); 
-  }
-
-
-}
-
-
 onMount(() => {
 
-
+/* 
   let cursorM = scene.children.filter(x => x.name==='cursorGroup')
   let pCam = scene.children.filter(x => x.name==='pCamera')
   let lookAtCamera = scene.children.filter(x => x.name==='lookAt')
@@ -414,6 +315,8 @@ onMount(() => {
   let captureLight = new THREE.PointLight( 0xffffff, 4, 36, 4 );
   captureLight.position.set( 2,  0.25, 16  );
   captureLight.name="captureLight"
+ */
+
  // scene.add( captureLight );
 
 /*     let div = document.createElement("div");
@@ -426,7 +329,7 @@ onMount(() => {
 
 
 // white spotlight shining from the side, modulated by a texture, casting a shadow
-const spotLight = new THREE.SpotLight( 0xffffff,  8);
+/* const spotLight = new THREE.SpotLight( 0xffffff,  8);
 spotLight.position.set( 2,  0.25, 16  );
 
 spotLight.map = new THREE.TextureLoader().load( './sunlight-.png' );
@@ -440,128 +343,172 @@ spotLight.angle = 1;
 spotLight.penumbra = 0.2;
 spotLight.decay = 1.5;
 spotLight.distance = 200;
-
-/* let northStar = scene.children.filter(x => x.name==='northStar')
-
-
-spotLight.target = ( northStar[0] );
-
  */
-// scene.add( spotLight );
-
-  // move gridhelper
-  let gridHlpr = scene.children.filter(x => x.name.includes('grid'))
-
-  //console.log('gridhelper: ', gridHlpr)
-
-
-
-  // clone gridhelper
-  let gridB = scene.children.filter(x => x.name==='gridB')
-
-    startingGridB = scene.children.filter(x => x.name==='gridB')
-
-    // backup original grid positions and quaternions
-
-    startingGridBPosition = JSON.stringify(startingGridB[0].position)  
-
-
-
-    startingGridBQuaternion =  JSON.stringify(startingGridB[0].quaternion) 
-
- 
-    //console.log('startingGridAQuaternion', startingGridAQuaternion, startingGridAPosition)
-
-    enablePause = true
     
-    
-/*   setTimeout(() => {
 
-          // starting game UI. choose classic arcade mode, daily game,  (intro/tutorial, + random level?)
 
-          ticker = new AdjustingInterval(moveGroup, 1500);
-          toggleTicker(ticker)
-          enablePause = true
 
-      }, 1500); //start game after 2 seconds
-       */
+
+
+
+init();
+// animate();
+
+function init() {
+
+
+  let group;
+  group = new THREE.Group();
+  group.position.y = 0;
+  scene.add( group );
+
+  const loader = new THREE.TextureLoader();
+  const texture = loader.load( 'download.jpg' );
+  texture.colorSpace = THREE.SRGBColorSpace;
+
+  // it's necessary to apply these settings in order to correctly display the texture on a shape geometry
+
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set( 0.008, 0.008 );
+
+  function addShape( shape, extrudeSettings, color, x, y, z, rx, ry, rz, s ) {
+
+    // flat shape with texture
+    // note: default UVs generated by THREE.ShapeGeometry are simply the x- and y-coordinates of the vertices
+
+    let geometry 
+    let mesh 
+
+
+    // extruded shape
+
+    geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+
+    mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: color } ) );
+    mesh.position.set( x, y, z - 75 );
+    mesh.rotation.set( rx, ry, rz );
+    mesh.scale.set( s, s/1.5, s );
+    group.add( mesh );
+
+   // addLineShape( shape, color, x, y, z, rx, ry, rz, s );
+
+  }
+
+  const x = 0, y = 0;
+
+
+  // Track
+
+  const trackShape = new THREE.Shape()
+    .moveTo( 40, 40 )
+    .lineTo( 40, 160 )
+    .absarc( 60, 160, 20, Math.PI, 0, true )
+    .lineTo( 80, 40 )
+    .lineTo( 60, 40);
+
+
+  // Circle
+
+  const circleRadius = 40;
+
+
+
+  // Arc circle
+
+  const arcShape = new THREE.Shape()
+    .moveTo( 50, 10 )
+    .absarc( 10, 10, 40, 0, Math.PI * 2, false );
+
+  const holePath = new THREE.Path()
+    .moveTo( 20, 10 )
+    .absarc( 10, 10, 10, 0, Math.PI * 2, true );
+
+  arcShape.holes.push( holePath );
+
+
+
+
+
+
+  const extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+
+  // addShape( shape, color, x, y, z, rx, ry,rz, s );
+
+//   addShape( trackShape, extrudeSettings, 0x008080, 200, - 100, 0, 0, 0, 0, 1 );
+
+  addShape( trackShape, extrudeSettings, 'hotpink', -12, -15, 97, 0, 0, 0,  0.20 );
+
+  addShape( trackShape, extrudeSettings, 'hotpink', -42, -14, 102, 0, 0, 0,  0.15 );
+
+  addShape( trackShape, extrudeSettings, 'hotpink', -42, 10, 102, 0, 0, 0,  0.15 );
+
+  addShape( trackShape, extrudeSettings, 'hotpink', -71, 0, 75, 0, -30 * (Math.PI / 180), 0,  0.25 );
+
+
+
+}
+
+
+
+//
+
+
+
+//
+
+/* function animate() {
+
+  requestAnimationFrame( animate );
+
+  render();
+  stats.update();
+
+}
+
+function render() {
+
+  group.rotation.y += ( targetRotation - group.rotation.y ) * 0.05;
+  renderer.render( scene, camera );
+
+} */
+
+
+
+
+
 
 });
 
 
+const texLoader = new THREE.TextureLoader();
+
+const texURL1 = 'purpleStone.jpg';
+const texURL2 = 'purpleStone.jpg';
+const texURL3 = 'purpleStone.jpg';
+
+const texURL4 = 'darkWall1.jpg';
+const texURL5 = 'darkWall1.jpg';
+const texURL6 = 'darkWall1.jpg';
+
+const mat1 = new THREE.MeshBasicMaterial({color: 0xffffff, map: texLoader.load(texURL1)});
+const mat2 = new THREE.MeshBasicMaterial({color: 0xffffff, map: texLoader.load(texURL2)});
+const mat3 = new THREE.MeshBasicMaterial({color: 0xffffff, map: texLoader.load(texURL3)});
+
+const mat4 = new THREE.MeshBasicMaterial({color: 0xffffff, map: texLoader.load(texURL4)});
+const mat5 = new THREE.MeshBasicMaterial({color: 0xffffff, map: texLoader.load(texURL5)});
+const mat6 = new THREE.MeshBasicMaterial({color: 0xffffff, map: texLoader.load(texURL6)});
+
+
+const  multiMaterial = [
+  mat1,
+  mat2,
+  mat3,
+  mat4,
+  mat5,
+  mat6
+];
+
 </script>
-<!--
-<Controls bind:this={controlsComponent} />
--->
-<T.Group
-name={'cursorGroup'}
-position.x={currentLocation[0]}
-position.y={8}
-position.z={currentLocation[2]}
-rotation.y={rotation*2}
-castShadow>
-
-
-<T.Mesh
-name={'myCursorMesh'}
-scale.x={1.5}
-scale.y={1.5}
-scale.z={1.5}
-castShadow receiveShadow
-on:click={removeItem}
-on:create={({ ref }) => {
-  ref.lookAt(0, 17.5, 0);
-  ref.rotateX(45);
-  ref.rotateZ(-15);
-}}
->
-
-<T.TetrahedronGeometry />
-
-<T.MeshStandardMaterial color={'#8080ff'}   />
-
-</T.Mesh>
-
-
-</T.Group>
-
-
-<T.Mesh
-name={'myCursorFloor'}
-position.x={currentLocation[0]}
-position.y={-.15}
-position.z={currentLocation[2]}
-scale.x={4.55}
-scale.y={1}
-scale.z={4.55}
-castShadow receiveShadow
->
-
-<T.BoxGeometry />
-<T.MeshStandardMaterial color={'#8080ff'} emissive={'#8080ff'} emissiveIntensity={3} transparent={true} opacity={0.35} />
-<!--
-<T.MeshStandardMaterial color={testGlowColor} emissive={'#8080ff'} emissiveIntensity={3} transparent={true} opacity={0.35} />
--->
-
-</T.Mesh>
-
-
-<T.Group
-name={'myGroup'}
-castShadow
->
-
-<!-- 
-{#if currentLevel===1}
-<Level1 {showCubes} />
-{/if}
--->
-
-</T.Group>
-
-
-
-
 
 <T.PerspectiveCamera
   name={'pCamera'}
@@ -579,13 +526,6 @@ castShadow
   />
 </T.PerspectiveCamera>
 
-<!-- <Audio
-id="global-audio"
-src={'stranger-things.mp3'}
-autoplay={false}
-loop={true}
-volume={0.5}
-/> -->
 
 <T.PerspectiveCamera
   name={'lookAt'}
@@ -598,7 +538,36 @@ volume={0.5}
 
 </T.PerspectiveCamera>
 
-<T.Mesh
+
+<!-- Castle Meshes-->
+
+
+<!-- textured mesh -->
+{#await map then value}
+  <T.Mesh
+  name={'frontEntrance'}
+  position.x={-70}
+  position.y={10}
+  position.z={28}
+
+
+  scale.x={30}
+  scale.y={40}
+  scale.z={40}
+
+  rotation.y={ -30 * (Math.PI / 180)}
+
+  >
+
+    <T.MeshStandardMaterial map={value}/>
+
+  <T.BoxGeometry />
+
+
+  </T.Mesh>
+
+
+<!-- <T.Mesh
 name={'westWing'}
 position.x={0}
 position.y={10}
@@ -614,15 +583,15 @@ scale.z={40}
     {fragmentShader}
     uniforms={materialPlus.uniforms}
   />
-<!--   uniforms={materialPlus.uniforms} -->
 
-  <T.MeshStandardMaterial  />
+
+<T.MeshBasicMaterial map={value} />
 
 <T.BoxGeometry />
 
 
 </T.Mesh>
-
+ -->
 
 <T.Mesh
 name={'westWing2'}
@@ -635,14 +604,7 @@ scale.y={40}
 scale.z={40}
 >
 
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={materialPlus.uniforms}
-  />
-<!--   uniforms={materialPlus.uniforms} -->
-
-  <T.MeshStandardMaterial  />
+  <T.MeshStandardMaterial map={value}/>
 
 <T.BoxGeometry />
 
@@ -665,20 +627,20 @@ scale.z={30}
     {fragmentShader}
     uniforms={materialPlus.uniforms}
   />
-<!--   uniforms={materialPlus.uniforms} -->
 
-  <T.MeshStandardMaterial  />
+    <T.MeshStandardMaterial map={value}/>
 
 <T.BoxGeometry />
 
 
 </T.Mesh>
 
+
 <T.Mesh
-name={'frontEntrance'}
-position.x={-70}
+name={'eastHall'}
+position.x={-107}
 position.y={10}
-position.z={28}
+position.z={6}
 
 scale.x={30}
 scale.y={40}
@@ -688,16 +650,30 @@ rotation.y={ -30 * (Math.PI / 180)}
 
 >
 
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={materialPlus.uniforms}
-  />
-<!--   uniforms={materialPlus.uniforms} -->
-
-  <T.MeshStandardMaterial  />
+  <T.MeshStandardMaterial map={value}  />
 
 <T.BoxGeometry />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'eastTower'}
+position.x={-83}
+position.y={20}
+position.z={8}
+
+scale.x={5.5}
+scale.y={60}
+scale.z={5.5}
+
+
+
+>
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.CylinderGeometry />
 
 
 </T.Mesh>
@@ -716,14 +692,8 @@ scale.z={12}
 
 >
 
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={materialPlus.uniforms}
-  />
-<!--   uniforms={materialPlus.uniforms} -->
 
-  <T.MeshStandardMaterial  />
+  <T.MeshStandardMaterial map={value}  />
 
 <T.CylinderGeometry />
 
@@ -744,102 +714,291 @@ scale.z={12}
 
 >
 
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={materialPlus.uniforms}
-  />
-<!--   uniforms={materialPlus.uniforms} -->
 
-  <T.MeshStandardMaterial  />
+  <T.MeshStandardMaterial map={value}  />
 
-<T.BoxGeometry />
+  <T.BoxGeometry />
 
 
 </T.Mesh>
 
+
+{/await}
+
+<!-- window arc -->
 <T.Mesh
-name={'eastTower'}
-position.x={-83}
+name={'window1'}
+position.x={17.5}
 position.y={20}
-position.z={8}
+position.z={50}
 
-scale.x={6.5}
-scale.y={66}
-scale.z={6.5}
+scale.x={5}
+scale.y={6}
+scale.z={5}>
 
-
-
->
-
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={materialPlus.uniforms}
-  />
-<!--   uniforms={materialPlus.uniforms} -->
-
-  <T.MeshStandardMaterial  />
-
-<T.CylinderGeometry />
-
-
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
 </T.Mesh>
 
+<T.Mesh
+name={'window2'}
+position.x={17.5}
+position.y={20}
+position.z={30}
 
+scale.x={5}
+scale.y={6}
+scale.z={5}>
+
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
+</T.Mesh>
 
 <T.Mesh
-name={'bigBox'}
-position.x={100}
-position.y={10}
-position.z={16}
+name={'window3'}
+position.x={17.5}
+position.y={0}
+position.z={50}
 
-scale.x={10}
+scale.x={5}
 scale.y={10}
-scale.z={80}
->
+scale.z={5}>
 
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-   
-  />
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
+</T.Mesh>
 
-  <T.MeshStandardMaterial  map={$BM_texture3} />
+<T.Mesh
+name={'window4'}
+position.x={17.5}
+position.y={0}
+position.z={30}
 
-<T.BoxGeometry />
+scale.x={5}
+scale.y={10}
+scale.z={5}>
 
-
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
 </T.Mesh>
 
 
 
 
+
+
+<!-- weather vane -->
+
 <T.Mesh
-name={'groundStart'}
+name={'groundStartPlane'}
 position.x={62}
-position.y={-24}
-position.z={16}
+position.y={50}
+position.z={36}
 
-scale.x={200}
-scale.y={10}
-scale.z={200}
+
+scale.x={30}
+scale.z={30}
+
+rotation.x={ -180 * (Math.PI / 180)}
+rotation.y={ -90 * (Math.PI / 180)}
 >
 
 <T.ShaderMaterial
     {vertexShader}
     {fragmentShader}
     uniforms={testmaterial.uniforms}
+    side={THREE.DoubleSide}
   />
 
 
-
-<T.BoxGeometry />
-
+  <T.PlaneGeometry />
 
 </T.Mesh>
 
 
+<T.Mesh
+name={'groundStartPlane2'}
+position.x={62}
+position.y={50}
+position.z={36}
+
+
+scale.x={30}
+scale.z={30}
+
+rotation.x={ -180 * (Math.PI / 180)}
+>
+
+<T.ShaderMaterial
+    {vertexShader}
+    {fragmentShader}
+    uniforms={testmaterial.uniforms}
+    side={THREE.DoubleSide}
+  />
+
+
+  <T.PlaneGeometry />
+
+  
+
+</T.Mesh>
+
+
+
+<!-- Ground Planes-->
+
+<T.Group
+name={'hillGroup'}
+castShadow
+
+rotation.z={ 25 * (Math.PI / 180)}
+>
+
+
+<T.Mesh
+name={'hillWestFace1'}
+position.x={16}
+position.y={-34}
+position.z={40}
+
+scale.x={60}
+scale.y={40}
+scale.z={40}
+
+rotation.x={ -180 * (Math.PI / 180)}
+rotation.y={ -90 * (Math.PI / 180)}
+>
+
+  <T.ShaderMaterial
+    {vertexShader}
+    {fragmentShader}
+    uniforms={testmaterial.uniforms}
+    side={THREE.DoubleSide}
+  />
+
+
+  <T.PlaneGeometry />
+
+</T.Mesh>
+
+
+<T.Mesh
+name={'hillWestFace2'}
+position.x={0}
+position.y={-34}
+position.z={90}
+
+scale.x={50}
+scale.y={40}
+scale.z={40}
+
+rotation.x={ -180 * (Math.PI / 180)}
+rotation.y={ -50 * (Math.PI / 180)}
+
+
+>
+
+  <T.ShaderMaterial
+    {vertexShader}
+    {fragmentShader}
+    uniforms={testmaterial.uniforms}
+    side={THREE.DoubleSide}
+  />
+
+
+  <T.PlaneGeometry />
+
+</T.Mesh>
+
+
+<T.Mesh
+name={'hillSouthFace1'}
+position.x={-10}
+position.y={-34}
+position.z={10}
+
+scale.x={50}
+scale.y={40}
+scale.z={40}
+
+rotation.x={ -180 * (Math.PI / 180)}
+rotation.y={ -180 * (Math.PI / 180)}
+rotation.z={ -1 * (Math.PI / 180)}
+
+
+>
+
+  <T.ShaderMaterial
+    {vertexShader}
+    {fragmentShader}
+    uniforms={darkTestMaterial.uniforms}
+    side={THREE.DoubleSide}
+  />
+
+
+  <T.PlaneGeometry />
+
+</T.Mesh>
+
+<T.Mesh
+name={'hillSouthFace3'}
+position.x={-36}
+position.y={-14}
+position.z={0}
+
+scale.x={90}
+scale.y={40}
+scale.z={40}
+
+rotation.x={ -180 * (Math.PI / 180)}
+rotation.y={ -180 * (Math.PI / 180)}
+rotation.z={ -25 * (Math.PI / 180)}
+
+
+>
+
+  <T.ShaderMaterial
+    {vertexShader}
+    {fragmentShader}
+    uniforms={darkTestMaterial.uniforms}
+    side={THREE.DoubleSide}
+  />
+
+
+  <T.PlaneGeometry />
+
+</T.Mesh>
+
+
+</T.Group>
+
+<!-- 
+<T.Mesh
+name={'hillWestFace1'}
+position.x={2}
+position.y={0}
+position.z={36}
+
+scale.x={300}
+scale.z={300}
+scale.y={40}
+
+rotation.x={ -180 * (Math.PI / 180)}
+
+>
+
+<T.ShaderMaterial
+    {vertexShader}
+    {fragmentShader}
+    uniforms={testmaterial.uniforms}
+    side={THREE.DoubleSide}
+  />
+
+
+  <T.PlaneGeometry />
+
+</T.Mesh>
+ -->
 
 
 
