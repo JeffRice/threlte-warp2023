@@ -290,64 +290,6 @@ if(pCam[0].position.x!=currentX){
 
 onMount(() => {
 
-/* 
-  let cursorM = scene.children.filter(x => x.name==='cursorGroup')
-  let pCam = scene.children.filter(x => x.name==='pCamera')
-  let lookAtCamera = scene.children.filter(x => x.name==='lookAt')
-
-
-
-  pCam[0].layers.enable(0)
-  pCam[0].layers.enable(1)
-
-  // backup original rotation
-  var startRotation = lookAtCamera[0].quaternion.clone();
-
-
-  cursorM[0].children[0].layers.enable(1)
-  cursorM[0].children[0].layers.set(1)
-
-  light = new THREE.PointLight( 0x0040ff, 3, 12 );
-  light.position.set( currentLocation[0], currentLocation[1], currentLocation[2]  );
-  scene.add( light );
-
-
-  let captureLight = new THREE.PointLight( 0xffffff, 4, 36, 4 );
-  captureLight.position.set( 2,  0.25, 16  );
-  captureLight.name="captureLight"
- */
-
- // scene.add( captureLight );
-
-/*     let div = document.createElement("div");
-  div.append("Some text");
-  let container = document.querySelector('#threeCanvas')
-  container.appendChild( div );
-
-*/
-
-
-
-// white spotlight shining from the side, modulated by a texture, casting a shadow
-/* const spotLight = new THREE.SpotLight( 0xffffff,  8);
-spotLight.position.set( 2,  0.25, 16  );
-
-spotLight.map = new THREE.TextureLoader().load( './sunlight-.png' );
-
-spotLight.castShadow = true;
-spotLight.intensity = 3;
-
-
-spotLight.castShadow = true;
-spotLight.angle = 1;
-spotLight.penumbra = 0.2;
-spotLight.decay = 1.5;
-spotLight.distance = 200;
- */
-    
-
-
-
 
 
 
@@ -436,13 +378,24 @@ function init() {
 
 //   addShape( trackShape, extrudeSettings, 0x008080, 200, - 100, 0, 0, 0, 0, 1 );
 
+
+  // west windows
   addShape( trackShape, extrudeSettings, 'hotpink', -12, -15, 97, 0, 0, 0,  0.20 );
 
   addShape( trackShape, extrudeSettings, 'hotpink', -42, -14, 102, 0, 0, 0,  0.15 );
 
   addShape( trackShape, extrudeSettings, 'hotpink', -42, 10, 102, 0, 0, 0,  0.15 );
 
-  addShape( trackShape, extrudeSettings, 'hotpink', -71, 0, 75, 0, -30 * (Math.PI / 180), 0,  0.25 );
+
+  // entrance
+  addShape( trackShape, extrudeSettings, 'hotpink', -73, 5, 77, 0, -30 * (Math.PI / 180), 0,  0.25 );
+
+  addShape( trackShape, extrudeSettings, 'hotpink', -73, -12, 77, 0, -30 * (Math.PI / 180), 0,  0.1 );
+
+  addShape( trackShape, extrudeSettings, 'hotpink', -56, -12, 87, 0, -30 * (Math.PI / 180), 0,  0.1 );
+
+  // east windows
+  addShape( trackShape, extrudeSettings, 'hotpink', -110, -16, 55, 0, -30 * (Math.PI / 180), 0,  0.25 );
 
 
 
@@ -567,39 +520,13 @@ const  multiMaterial = [
   </T.Mesh>
 
 
-<!-- <T.Mesh
-name={'westWing'}
-position.x={0}
-position.y={10}
-position.z={20}
-
-scale.x={30}
-scale.y={40}
-scale.z={40}
->
-
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={materialPlus.uniforms}
-  />
-
-
-<T.MeshBasicMaterial map={value} />
-
-<T.BoxGeometry />
-
-
-</T.Mesh>
- -->
-
 <T.Mesh
 name={'westWing2'}
 position.x={0}
 position.y={10}
 position.z={42}
 
-scale.x={40}
+scale.x={30}
 scale.y={40}
 scale.z={40}
 >
@@ -680,8 +607,8 @@ scale.z={5.5}
 
 <T.Mesh
 name={'centralTower'}
-position.x={-62}
-position.y={36}
+position.x={-52}
+position.y={40}
 position.z={36}
 
 scale.x={12}
@@ -702,8 +629,8 @@ scale.z={12}
 
 <T.Mesh
 name={'centralTowerLvl2'}
-position.x={-62}
-position.y={50}
+position.x={-52}
+position.y={56}
 position.z={36}
 
 scale.x={12}
@@ -722,13 +649,368 @@ scale.z={12}
 
 </T.Mesh>
 
+<!-- <T.Mesh
+name={'westRoof'}
+position.x={0}
+position.y={30}
+position.z={42}
+
+rotation.y={ -45 * (Math.PI / 180)}
+
+scale.x={32}
+scale.y={20}
+scale.z={32}
+>
+
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.OctahedronGeometry />
+
+
+</T.Mesh> -->
+
+<T.Mesh
+name={'westRoof'}
+position.x={0}
+position.y={40}
+position.z={42}
+
+
+
+rotation.x={ -90 * (Math.PI / 180)}
+
+
+scale.x={4}
+scale.y={4}
+scale.z={4}
+
+
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.CylinderGeometry args={[5, 5 , 10, 3]} />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'eastRoof'}
+position.x={-104}
+position.y={30}
+position.z={0}
+
+
+
+rotation.y={ 105 * (Math.PI / 180)}
+
+scale.x={24}
+scale.y={24}
+scale.z={24}
+>
+
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.OctahedronGeometry />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'entranceRoof'}
+position.x={-70}
+position.y={30}
+position.z={28}
+
+
+rotation.x={ -90 * (Math.PI / 180)}
+rotation.z={ -30 * (Math.PI / 180)}
+
+scale.x={3}
+scale.y={4}
+scale.z={4}
+
+
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.CylinderGeometry args={[5, 5 , 10, 3]} />
+
+
+</T.Mesh>
+
+
+
+<T.Mesh
+name={'WestTower'}
+position.x={0}
+position.y={20}
+position.z={78}
+
+scale.x={5.5}
+scale.y={60}
+scale.z={5.5}
+
+>
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.CylinderGeometry />
+
+
+</T.Mesh>
+
+
+
+<T.Mesh
+name={'towerTop2'}
+position.x={0}
+position.y={58}
+position.z={78}
+
+scale.x={1.75}
+scale.y={1.75}
+scale.z={1.75}
+
+
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+
+<T.Mesh
+name={'towerTop1'}
+position.x={-83}
+position.y={58}
+position.z={8}
+
+scale.x={1.75}
+scale.y={1.75}
+scale.z={1.75}
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+<T.Mesh
+name={'towerTop2'}
+position.x={-52}
+position.y={72}
+position.z={36}
+
+scale.x={1.75}
+scale.y={1.75}
+scale.z={1.75}
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+
+<T.Mesh
+name={'mainTowerCyl'}
+position.x={-42}
+position.y={55}
+position.z={35}
+
+scale.x={2}
+scale.y={10}
+scale.z={2}
+
+
+
+>
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.CylinderGeometry />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'towerTop3'}
+position.x={-42}
+position.y={66}
+position.z={35}
+
+
+scale.x={0.5}
+scale.y={1.25}
+scale.z={0.5}
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+
+<T.Mesh
+name={'mainTowerCyl2'}
+position.x={-52}
+position.y={55}
+position.z={45}
+
+scale.x={2}
+scale.y={10}
+scale.z={2}
+
+
+
+>
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.CylinderGeometry />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'towerTop32'}
+position.x={-52}
+position.y={66}
+position.z={45}
+
+
+scale.x={0.5}
+scale.y={1.25}
+scale.z={0.5}
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+
+<T.Mesh
+name={'mainTowerCyl3'}
+position.x={-52}
+position.y={55}
+position.z={25}
+
+scale.x={2}
+scale.y={10}
+scale.z={2}
+
+
+
+>
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.CylinderGeometry />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'towerTop33'}
+position.x={-52}
+position.y={66}
+position.z={25}
+
+
+scale.x={0.5}
+scale.y={1.25}
+scale.z={0.5}
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+<T.Mesh
+name={'mainTowerCyl4'}
+position.x={-62}
+position.y={55}
+position.z={35}
+
+scale.x={2}
+scale.y={10}
+scale.z={2}
+
+
+
+>
+
+  <T.MeshStandardMaterial map={value}  />
+
+  <T.CylinderGeometry />
+
+
+</T.Mesh>
+
+<T.Mesh
+name={'towerTop34'}
+position.x={-62}
+position.y={66}
+position.z={35}
+
+
+scale.x={0.5}
+scale.y={1.25}
+scale.z={0.5}
+>
+
+
+  <T.MeshStandardMaterial  map={value}  />
+
+  <T.ConeGeometry args={[5, 10 , 14]} />
+
+
+</T.Mesh>
+
+
+
+
+
 
 {/await}
 
-<!-- window arc -->
+<!-- windows rounded rect -->
 <T.Mesh
 name={'window1'}
-position.x={17.5}
+position.x={13}
 position.y={20}
 position.z={50}
 
@@ -742,7 +1024,7 @@ scale.z={5}>
 
 <T.Mesh
 name={'window2'}
-position.x={17.5}
+position.x={13}
 position.y={20}
 position.z={30}
 
@@ -756,7 +1038,7 @@ scale.z={5}>
 
 <T.Mesh
 name={'window3'}
-position.x={17.5}
+position.x={13}
 position.y={0}
 position.z={50}
 
@@ -770,7 +1052,7 @@ scale.z={5}>
 
 <T.Mesh
 name={'window4'}
-position.x={17.5}
+position.x={13}
 position.y={0}
 position.z={30}
 
@@ -782,14 +1064,78 @@ scale.z={5}>
   <T.MeshPhongMaterial color='hotpink' />
 </T.Mesh>
 
-
-
-
-
-
-<!-- weather vane -->
+<!-- east windows-->
 
 <T.Mesh
+name={'window5'}
+position.x={-107}
+position.y={22}
+position.z={-16}
+
+rotation.y={ -120 * (Math.PI / 180)}
+
+scale.x={2}
+scale.y={4}
+scale.z={2}>
+
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
+</T.Mesh>
+
+<T.Mesh
+name={'window6'}
+position.x={-100}
+position.y={22}
+position.z={-12}
+
+rotation.y={ -120 * (Math.PI / 180)}
+
+scale.x={2}
+scale.y={4}
+scale.z={2}>
+
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
+</T.Mesh>
+
+<T.Mesh
+name={'window7'}
+position.x={-93}
+position.y={22}
+position.z={-8}
+
+rotation.y={ -120 * (Math.PI / 180)}
+
+scale.x={2}
+scale.y={4}
+scale.z={2}>
+
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
+</T.Mesh>
+
+<T.Mesh
+name={'window8'}
+position.x={-86}
+position.y={22}
+position.z={-4}
+
+rotation.y={ -120 * (Math.PI / 180)}
+
+scale.x={2}
+scale.y={4}
+scale.z={2}>
+
+  <T.ExtrudeGeometry />
+  <T.MeshPhongMaterial color='hotpink' />
+</T.Mesh>
+
+
+
+
+
+
+<!-- <T.Mesh
 name={'groundStartPlane'}
 position.x={62}
 position.y={50}
@@ -841,7 +1187,7 @@ rotation.x={ -180 * (Math.PI / 180)}
 
   
 
-</T.Mesh>
+</T.Mesh> -->
 
 
 
@@ -971,35 +1317,6 @@ rotation.z={ -25 * (Math.PI / 180)}
 
 
 </T.Group>
-
-<!-- 
-<T.Mesh
-name={'hillWestFace1'}
-position.x={2}
-position.y={0}
-position.z={36}
-
-scale.x={300}
-scale.z={300}
-scale.y={40}
-
-rotation.x={ -180 * (Math.PI / 180)}
-
->
-
-<T.ShaderMaterial
-    {vertexShader}
-    {fragmentShader}
-    uniforms={testmaterial.uniforms}
-    side={THREE.DoubleSide}
-  />
-
-
-  <T.PlaneGeometry />
-
-</T.Mesh>
- -->
-
 
 
 
