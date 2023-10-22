@@ -1,90 +1,69 @@
 <script lang="ts">
 import '../../app.css'
 import './../styles.css'
-// import { page } from "$app/stores"
-import {width, height, gameMenu}  from './stores.js';
+import {width, height}  from './stores.js';
 import { onMount } from 'svelte'
 
 
-  //to menu width/height on resize
-/*   $: if ($width || $height) {
-    //console.log('w + h', $width, $height) 
-	// ingameMenu.setAttribute('style', 'width: ' + ($width/3));
-  } */
 
-/*   function showMenu(){
-	// //console.log('but howe', $sceneLoaded)
-	if($sceneLoaded===true){
-		// //console.log('TRUE TRUE howe', $sceneLoaded)
-	}
-  } */
 
-function handleOnChange(event) {
-	//save value to store	
-    //  storeMusicVolume.update(n => event.target.value);
-	//  localStorage.setItem("storeMusicVolume", event.target.value);
-	}
 
-	let combo: int
-	let timeoutHandle
 	let visible = false
-	let performanceMode = false
-	let msgTest = false
-	let comboScore = 0
-	let perfNot = false
-	let fpsDiv = false
-	let bgImage = true
 	let testDate
 
-
-
-
-function fps(){
-
-	let container = document.querySelector('#tester')
-
-
-
-if(!fpsDiv){
-	for (const child of container.children) {
-  child.setAttribute('style', 'display: block;');
-  localStorage.setItem("fps", 'true');
-}
-}
-else{
-	for (const child of container.children) {
-  child.setAttribute('style', 'display: none;');
-  localStorage.setItem("fps", 'false');
-}	
-}
-fpsDiv=!fpsDiv
-
-
-
-}
 
 
  onMount(() => {
 
 	testDate = new Date(Date.now())
 
+	console.log(testDate)
+
 	let sky = document.querySelectorAll("#retrobg-sky");
-	let ground = document.querySelectorAll("#retrobg-ground");
 
 	sky[0].style.opacity=1
-// 	ground[0].style.opacity=1
 
 
+	var diff = Math.abs(new Date() - new Date('2023/10/31 00:00:00'));
 
+	console.log(diff)
 
+	console.log(millisToMinutesAndSeconds(diff))
 
-		
+    let display = document.querySelector('#time');
+    startTimer(millisToMinutesAndSeconds(diff) * 60, display);
 
-
-
-
+	
 
  })
+
+
+
+
+// https://stackoverflow.com/questions/31106189/create-a-simple-10-second-countdown
+
+ function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            timer = duration;
+        }
+    }, 1000);
+}
+
+
+function millisToMinutesAndSeconds(millis) {
+  var minutes = Math.floor(millis / 60000);
+  return minutes
+}
 
 
 
@@ -107,14 +86,28 @@ fpsDiv=!fpsDiv
 
   
     <main  id="threeCanvas" bind:clientWidth={$width} bind:clientHeight={$height}>
-  
-  
-    <div id="tester"></div>
+
   
       
       <slot />
       
     </main>
+
+	<div style="top:0;width:100%;height:50px;text-align: center; color:white;" class="ui">
+		
+
+		<div style='top: 10%; width:100%;	margin-left:auto;auto; border-left: 0; border-right: 0; font-size: 1.75rem; font-weight: 800;' class="ui game-menu">
+			<p style="margin-block-start: 0; margin-block-end: 0;">
+				<h1 class="page-title">Welcome to Threlte Castle</h1>		
+				
+				<div>Halloween countdown <span id="time">05:00</span> minutes!</div>
+
+	  </div>
+
+	</div>
+
+
+
     </div>
     
 
@@ -403,153 +396,236 @@ fpsDiv=!fpsDiv
 .retrobg-hline + .retrobg-hline { margin-top: 98px; }
 .retrobg-vline + .retrobg-vline { margin-left: 48px; }
 
-/*  .gameModes{
-	border: 8px solid transparent;
-    content: " ";
-    height: 0;
-    border-right-color: #f1f1f1;
-    margin-top: 4px;
-    display: block;
-
-}  */
-
-.gameModes {
-	margin: 0;
-    padding: 8px 0 0 0;
-    height: 36px;
-    overflow: hidden;
+/* background pattern from heropatterns.com */
+body,
+html {
+	height: 100%;
+	display: flex;
+	background-color: #303030;
+	justify-content: center;
+	align-items: center;
+	color: lighten(#b2ff59, 0%);
+	flex-flow: column;
 }
 
-.gameModes:hover{
-	background-color: #676bc9;
-	cursor: pointer;
-	box-shadow: 1px 1px 1px 2px;
-	display:block
+@font-face {
+  font-family: "Creepy";
+  src: url("https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Fonts/Creepy.woff?raw=true") format("woff"), url("https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Fonts/Creepy.woff2?raw=true") format("woff2")
 }
 
-button:hover{
+@font-face {
+  font-family: "Lunacy";
+  src: url("https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Fonts/Lunacy.woff") format("woff"), url("https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Fonts/Lunacy.woff2") format("woff2")
+}
 
-	cursor: pointer;
+* {
+  box-sizing: border-box;
+}
 
+html {
+  min-height: 100vh;
+  cursor: url("https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Cursors/Ghost.cur"), auto;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(#9D5900, #3D2200);
+}
+
+.page-title {
+  color: #FF6D00;
+  font-family: Creepy, serif;
+  font-weight: normal;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.game-info-container {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.game-info {
+  font-family: Lunacy, serif;
+  color: #FFBB89;
+  font-size: 4em;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 10px;
+  margin: 50px;
+  justify-content: center;
+  perspective: 500px;
+}
+
+.card {
+  position: relative;
+  height: 175px;
+  width: 125px;
+}
+
+.card:hover {
+  cursor: url("https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Cursors/GhostHover.cur"), auto;
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  border-width: 1px;
+  border-style: solid;
+  transition: transform 500ms ease-in-out;
+}
+
+.card.visible .card-back {
+  transform: rotateY(-180deg);
+}
+
+.card.visible .card-front {
+  transform: rotateY(0)
+}
+
+.card.matched .card-value {
+  animation: dance 1s linear infinite 500ms;
+}
+
+.overlay-text {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  color: #FF6D00;
+  font-family: Creepy, serif;
+}
+
+.overlay-text-small {
+  font-size: .3em;
+}
+
+.overlay-text.visible {
+  display: flex;
+  flex-direction: column;
+  animation: overlay-grow 500ms forwards;
+}
+
+@keyframes overlay-grow {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 0;
+  }
+  to {
+    background-color: rgba(0, 0, 0, .8);
+    font-size: 10em;
+  }
+}
+
+@keyframes dance {
+  0%, 100%  {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-30deg);
+  }
+  75% {
+    transform: rotate(30deg);
+  }
+}
+
+.card-back {
+  background-color: black;
+  border-color: #FF6D00;
+}
+
+.card-front {
+  background-color: #FFBB89;
+  border-color: #333;
+  transform: rotateY(180deg);
+}
+
+.card-value {
+  transition: transform 100ms ease-in-out;
+  transform: scale(.9);
+}
+
+.card-front:hover .card-value {
+  transform: scale(1);
+}
+
+.cob-web {
+  position: absolute;
+  width: 47px;
+  height: 47px;
+  transition: width 100ms ease-in-out, height 100ms ease-in-out;
+}
+
+.card-face:hover .cob-web {
+  width: 52px;
+  height: 52px;
+}
+
+.cob-web-top-left {
+  transform: rotate(270deg);
+  top: 0;
+  left: 0;
+}
+
+.cob-web-top-right {
+  top: 0;
+  right: 0;
+}
+
+.cob-web-bottom-left {
+  transform: rotate(180deg);
+  bottom: 0;
+  left: 0;
+}
+
+.cob-web-bottom-right {
+  transform: rotate(90deg);
+  bottom: 0;
+  right: 0;
+}
+
+.spider {
+  align-self: flex-start;
+  transform: translateY(-10px);
+  transition: transform 100ms ease-in-out;
+}
+
+.card-back:hover .spider {
+  transform: translateY(0)
+}
+
+@media (max-width: 600px) {
+  .game-container {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  .game-info-container {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 
-/* #arrow::after{
-    border: 8px solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    pointer-events: none;
-    border-right-color: #f1f1f1;
-    margin-top: 4px;
-	margin-left: 4px;
-    position: absolute;
-	display: none;
-
-}
-
- */
-
-.down-arrow {
-	color: #fff;
-	font-size: 30px;
-	position: absolute;
-	bottom: 30px;
-	left: 49.5%;
-	-webkit-transform: translateX(-50%);
-	-ms-transform: translateX(-50%);
-	transform: translateX(-50%);
-}
-.down-arrow a {
-	color: #fff;
-}
 
 
-#dailyArrow {
-	display:none;
-}
 
-#introArrow {
-	display:none;
-}
-#classicArrow {
-	display:none;
-}
-#randomArrow {
-	display:none;
-}
 
-/* Float animation style*/
 
-.float-arrow {
-    position: relative;
-    bottom: 33px;
-    left: 95%;
-    width: 60px;
-    margin-left: -30px;
-	animation-duration: 2s;
-    animation-delay: 0s;
-    animation: float 2s infinite;
-    -webkit-animation: float 2s infinite;
-    -moz-animation: float 2s infinite;
-    -o-animation: float 2s infinite;
-
-}
-
-@-webkit-keyframes float {
-    0% {
-        -webkit-transform: translateX(0);
-    }
-
-    50% {
-        -webkit-transform: translateX(-30px);
-    }
-
-    100% {
-        -webkit-transform: translateX(0);
-    }
-}
-
-@-moz-keyframes float {
-    0% {
-        -webkit-transform: translateX(0);
-    }
-
-    50% {
-        -webkit-transform: translateX(-30px);
-    }
-
-    100% {
-        -webkit-transform: translateX(0);
-    }
-}
-
-@-o-keyframes float {
-    0% {
-        -webkit-transform: translateX(0);
-    }
-
-    50% {
-        -webkit-transform: translateX(-30px);
-    }
-
-    100% {
-        -webkit-transform: translateX(0);
-    }
-}
-
-@keyframes float {
-    0% {
-        -webkit-transform: translateX(0);
-    }
-
-    50% {
-        -webkit-transform: translateX(-30px);
-    }
-
-    100% {
-        -webkit-transform: translateX(0);
-    }
-}
 
 </style>

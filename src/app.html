@@ -3,12 +3,33 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Yeon+Sung&display=swap" rel="stylesheet">
 		<title>Flawd Games</title>
 		<meta name="viewport" content="width=device-width" />
 		%sveltekit.head%
 		<script src="https://kit.fontawesome.com/a3eb942748.js" crossorigin="anonymous"></script>
 
 		<style>
+
+.storm {
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  position:absolute;
+  animation:flash 5s linear infinite;
+}
+
+@keyframes flash{ 
+  0%,  95%,  98% {background-color:transparent}
+  96%, 99%, 100% {background-color:#fff} 
+}
 
 HTML CSS JSResult Skip Results Iframe
 html {
@@ -27,7 +48,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 9999;
 }
 
 .rain.back-row {
@@ -123,6 +144,7 @@ body.splat-toggle .splat {
 		</style>
 	</head>
 	<body class="back-row-toggle splat-toggle" data-sveltekit-preload-data="hover">
+    <div class="storm" >
 		<div style="display: contents">%sveltekit.body%</div>
 		<div class="rain front-row"></div>
 		<div class="rain back-row"></div>
@@ -135,8 +157,6 @@ body.splat-toggle .splat {
 
   
 		<script>
-
-
 			var makeItRain = function() {
 			  //clear out everything
 			  $('.rain').empty();
@@ -184,5 +204,6 @@ body.splat-toggle .splat {
 			
 			
 					</script>
+          </div>
 	</body>
 </html>
