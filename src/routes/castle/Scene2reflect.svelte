@@ -466,9 +466,9 @@ const  multiMaterial = [
 <T.PerspectiveCamera
   name={'pCamera'}
   makeDefault
-  position={[-80, 50, 16]}
+  position={[100, 40, -126]}
   on:create={({ ref }) => {
-      ref.lookAt(0, 0, 16);
+      ref.lookAt(100, 80, 200);
   }}
   
 >
@@ -479,17 +479,6 @@ const  multiMaterial = [
   />
 </T.PerspectiveCamera>
 
-
-<T.PerspectiveCamera
-  name={'lookAt'}
-  position={[50, 24, 16]}
-  on:create={({ ref }) => {
-      ref.lookAt(0, 1, 16);
-  }}
->
-
-
-</T.PerspectiveCamera>
 
 
 <!-- Castle Meshes-->

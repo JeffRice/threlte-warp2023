@@ -100,7 +100,7 @@ function millisToMinutesAndSeconds(millis) {
 			<p style="margin-block-start: 0; margin-block-end: 0;">
 				<h1 class="page-title">Welcome to Threlte Castle</h1>		
 				
-				<div>Halloween countdown <span id="time">05:00</span> minutes!</div>
+				<div class="page-title">Halloween countdown <span style="font-family:'Courier New', Courier, monospace; font-size: 2rem;" id="time">05:00</span> minutes!</div> 
 
 	  </div>
 
@@ -437,7 +437,7 @@ body {
   font-family: Creepy, serif;
   font-weight: normal;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 3em;
 }
 
 .game-info-container {
